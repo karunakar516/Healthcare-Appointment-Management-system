@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Watduwant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+    <!-- <link rel="stylesheet" href={% static 'css/customer/index.css' %} /> -->
+    <style>
+      body {
+        background-color: rgba(10,10,10,0.8)
+      }
+      .heading{
+        color: white;
+        font-size: 1.5rem;
+        line-height:1.5;
+        font-weight:bold;
+      }
+      .flexRow{
+        display: flex;
+        flex-direction: row;
+      }
+      .flexCol{
+          display: flex;
+          flex-direction: column;
+      }
+      .dropdown-pic{
+        position: relative;
+        display: inline-block;
+      }
+      .dropdown-content {
+        display: none;
+        top:auto;
+        left:auto;
+        opacity:1;
+        right: 0;
+        list-style: none;
+        padding-left: 0;
+        position: absolute;
+        background-color: black;
+        min-width: fit-content;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      }
+      .dropdown--content a{
+        color: #f9f9f9;
+        text-align: center;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .dropdown-pic:hover .dropdown-content {
+        display: block;
+      }
+
+       #button-holder img{
+        margin:4px;
+        width:20px; 
+       }
+       .input-group {
+        margin: auto;
+        
+      
+        padding: 15px;
+      }
+     
+      
+      
+      /* form:hover {
+        width: 200px;
+        cursor: pointer;
+      } */
+      
+     form:hover .fa {
+        background: #07051a;
+        color: white;
+      }
+
+      body {
+        font-family: 'Roboto', Arial, sans-serif;
+      }
+      
+    </style>
+  </head>
+  <body>
+
+    <nav style="width: 100%;height:5rem;" class="navbar navbar-dark bg-dark">
+      <div style="position: relative;" class="container-fluid">
+        <a style="border:2px solid gold;border-radius:50%;position:absolute;left:46%;" class="p-0" href="/">
+          <img src="{% static 'images/logo.png' %}" class="img-fluid" width=60 alt="">
+        </a>
+        <ul style="position: absolute;right:3%" class="d-flex  me-0 ms-0 p-0 mb-2">
+          <li class="dropdown-pic">
+            <a class="dropdown-button" style="border-radius:50%;text-decoration: none;color:white;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{% static 'images/customer-profile.jpg' %}" style="border-radius: 50%;" width=40 alt="">
+            </a>
+            <ul class="dropdown-content" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="/account">account</a></li>
+              <li><a class="dropdown-item" href="#">bookings</a></li>
+              <li><a class="dropdown-item" href="/logout">logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>Message!-</strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    
+    <div class="app">
+      {% block content %} 
+      {% endblock content %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  </body>
+  
+</html>

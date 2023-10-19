@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% load static %} 
+{% block content %}
+<center>
+  {%if searched %}
+  <h1>You searched for {{searched}}</h1><br/>
+  {% for search in searches %}
+  {{search}}<br/>
+  {% endfor %}
+  
+  {% for search in search %}
+  {{search}}<br/>
+  {% endfor %}
+  {% endif %}
+  
+</center>
+{% endblock %}
+
+
+

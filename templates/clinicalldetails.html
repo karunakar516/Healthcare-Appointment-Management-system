@@ -1,0 +1,318 @@
+{% extends "base.html" %} {% load static %}
+{% block content %}
+{% load custom_tags %}
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<style>
+  html {
+    font-size: 93.75%;
+  }
+
+  .row {
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 1.5rem;
+
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .row2 {
+
+    padding-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-left: 7rem;
+  }
+
+  .container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding-top: 0.1rem;
+    width: auto;
+    height: auto;
+  }
+
+  .frow {
+
+
+
+    justify-content: center;
+    display: flex;
+    flex-wrap: nowrap;
+
+    padding-top: 0.5rem;
+
+    border-radius: 0.5rem;
+    border: 2px solid black;
+
+  }
+
+  .column-holder {
+    justify-content: center;
+    display: flex;
+
+
+  }
+
+  .supsub {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    vertical-align: middle;
+    font-size: 20%;
+  }
+
+  /* Create two equal columns that floats next to each other */
+
+
+  .column1 {
+
+    align-content: center;
+    float: center;
+    padding: 0.6rem;
+
+    height: 8rem;
+    /* Should be removed. Only for demonstration */
+  }
+
+  .left {
+    width: 11rem;
+  }
+
+  .right {
+    width: 11rem;
+  }
+
+  .middle {
+    text-align: left;
+    width: 32rem;
+    padding-left: 1rem;
+  }
+
+  .img {
+    border-radius: 4rem;
+
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+
+
+  @media only screen and (max-width: 1200px) {
+    html {
+      font-size: 82.35%;
+    }
+  }
+
+  @media only screen and (max-width: 1024px) {
+    html {
+      font-size: 70.27%;
+    }
+  }
+
+  @media only screen and (max-width: 750px) {
+    html {
+      font-size: 37.50%;
+
+    }
+
+
+  }
+
+  @media only screen and (max-width: 650) {
+    html {
+      font-size: 24%;
+    }
+  }
+
+  @media only screen and (max-width: 550) {
+    html {
+      font-size: 18%;
+    }
+  }
+
+  @media only screen and (max-width: 360) {
+    html {
+      font-size: 13%;
+    }
+  }
+
+  @media only screen and (max-width: 280) {
+    html {
+      font-size: 1.5%;
+    }
+
+  }
+</style>
+
+<div class="full-height" style="height: 100%; background-color:white;">
+  {% if details.Interior_image %}
+  <div class="row mx-auto" style=" width: 54.5rem; background :url('{details.Interior_image.url}');;background-position: center;background-repeat: no-repeat;background-size: 100% 100%; justify-content:center;display:flex">
+    {% else %}
+    <div class="row mx-auto" style="width: 54.5rem">
+    {% endif %}
+    <div class="row2">
+      <b>
+        <h2
+          style="color : black ; font-size:5rem;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+          {{details.Name}} </h2>
+      </b>
+
+    </div>
+
+  </div>
+  
+  <br>
+
+
+
+  <div class="column-holder">
+    <div class="column-right" style="font-size: 2.6rem; float:left;padding-right:16.5rem"><b>Doctors:</b></div>
+    <div class="column-left" style="float: right;padding-left:16.5rem"><i class="fa fa-clock-o"
+        style="font-size:2.4rem"><span class="supsub"><span><sup
+              style="font-size: 0.9rem;"><b>MON-SAT</b></sup></span><span><sub
+              style="font-size: 0.6rem;"><b>{{details.Opening_time}}-{{details.Closing_time}}</b></sub></span></span></i>
+      &nbsp; <i class="fa fa-map-marker" style="font-size:2.4rem"></i> &nbsp; <i class="fa fa-phone"
+        style="font-size:2.4rem"></i>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  {% for d in data %}
+
+  <div class="container">
+    <div class="frow mx-auto p-3" style=" width: 54.5rem;background-color:#000000;">
+
+
+      <div class="column1 left">
+        {% if d.Doctor.Image %}
+        <img src={{d.Doctor.Image.url}} alt="Avatar" style="width: 9.3rem; height: 9.3rem; " class="rounded-circle">
+        {% else %}
+        <img src="https://cdn.pixabay.com/photo/2014/12/10/20/56/medical-563427_640.jpg" alt="Image 2"style="width: 9.3rem; height: 9.3rem; " class="rounded-circle">
+        {% endif %}
+      </div>
+
+      <div class="column1 middle" style="color:#FFFF00;padding :0.9rem;padding-left: 0.6rem;">
+
+        <p style="font-size: 1.66rem;"><b>&nbsp&nbsp {{d.Doctor.Name}}</b></p>
+        <ul type=circle style="color: white;font-size: 1.3rem;">
+          <li>Experience : {{d.Doctor.Experience}}</li>
+          <li>Speciality : {{d.Doctor.Specialization}}</li>
+          <li>Fees :{{d.Fees}}</li>
+        </ul>
+
+      </div>
+
+      <div class="column1-right">
+
+        <div class="btn-holder " style="padding: 8rem 0.33rem 0.33rem 0.33rem;">
+          <!-- Button trigger  Appointment modal -->
+
+          <button type="button" id="myBtn" style="border-radius: 2.8rem; width:15rem; height:2.53rem;font-size:1.2rem;"
+            data-bs-toggle="modal" data-bs-target="#appointmentmodal{{d.id}}" <b>Book Appointment</b></button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  
+  <div class="modal fade" id="appointmentmodal{{d.id}}" tabindex="-1" aria-labelledby="appointmentmodal{{d.id}}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="appointmentmodaltitle{{d.id}}">Book an appointment here...</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'appointment' %}" method="post">{% csrf_token %}
+            <div class="form-group">
+              <label for="patient_name">Patient Name</label>
+              <input type="text" class="form-control" id="patient_name" name="patient_name"
+                placeholder="Write the patient name here" required>
+            </div>
+            <div class="form-group">
+              <label for="age">Age</label>
+              <input type="number" class="form-control" id="age" name="age" placeholder="Patient's Age"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="sex">Sex</label>
+              <select class="form-select" id="sex" name="sex" aria-label="select gender">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone number"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="doctor">Doctor</label>
+              <select class="form-select" id="doctor" name="doctor" aria-label="select doctor">
+                <option value="{{d.Doctor.Name}}">{{d.Doctor.Name}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="hidden" class="form-control" id="service_pk" name="service_pk" value={{d.id}}>
+            </div>
+            <div class="form-group">
+              <label for="date">Day</label>
+              <select class="form-select" id="days" name="days" aria-label="select day">
+                {% for servicedetail in d.id|get_servicedetails %}
+                  <option value="{{ servicedetail.Day}}">{{ servicedetail.Day}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="time">Time</label>
+              <select class="form-select" id="Time" name="Time" aria-label="select Time">
+              {% for servicedetailDayTime in d.id|get_servicedetails1 %}
+                <option value="{{ servicedetailDayTime.Time}},{{ servicedetailDayTime.Time|time:'H:i:s' }}">{{servicedetailDayTime.Time}}</option>
+              {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+  <br>
+</div>
+  {% endblock %}

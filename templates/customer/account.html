@@ -1,0 +1,198 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<!-- 
+<div style="width:70%;" class="flexRow m-auto">
+    <div style="width: 30%;" class="flexCol mr-5">
+        <div><h1>Profile</h1></div>
+    </div>
+    <div style="width: 55%;" class="flexCol">
+        <div><h1>Profile</h1></div>
+        <div class="flexRow">
+
+        </div>
+    </div>
+</div> -->
+<style>
+    .middlecontent{
+        width: 80%;
+        justify-content: center;
+    }
+    .booking-content{
+        background-color:black;
+        padding:1.5rem 0.4rem 1.5rem 0.4rem;
+    }
+    .profile-content{
+        font-size: large;
+        box-sizing: border-box;
+        padding: 1rem 3rem 1rem;
+        font-weight: 500;
+        background-color:black;
+    }
+    .profile-image{
+        width: 150px;
+        height: 150px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .dp-pic{
+        display: inline;
+        margin: 0 auto;
+        /* margin-left: -25%; */
+        background-size:contain;
+        background-position:center;
+        height: auto;
+        width: auto;
+    }
+    .profile-col{
+        width: 30%;
+        margin-right: 2.4rem;;
+    }
+
+    .booking-col{
+        width: 52%;
+    }
+    .booking-con{
+        width: 80%;
+        font-weight:500;
+        font-size:large;
+    }
+    .profile-info{
+        width: 80%;
+        justify-content: center;
+    }
+    .shop-image{
+        width: 20%;
+        color:white;
+    }
+    .query{
+        color: gold;
+        width:50%;
+        text-align:right;
+    }
+    .info{
+        color: white;
+        width: 40%;
+    }
+    @media only screen and (max-width: 1200px) {
+        .middlecontent{
+            width: 90%;
+        }
+        .profile-col{
+            width: 33%;
+        }
+        .booking-col{
+            width: 67%;
+        }
+        .booking-con{
+            font-weight:500;
+            font-size: 1.1rem;
+        }
+    }
+    @media only screen and (max-width: 1006px) {
+        .middlecontent{
+            width: 95%;
+        }
+        .profile-col{
+            width: 35%;
+        }
+        .booking-col{
+            width: 65%;
+        }
+        .profile-content{
+            font-size: medium;
+        }
+        /* .profile-image{
+            width: 40%;
+            height: 40%;
+        } */
+        .shop-name{
+            font-size: 0.8rem;
+        }
+    }
+    @media only screen and (max-width: 700px) {
+        .booking-content{
+            flex-direction: column-reverse;
+            padding: 2rem 0 2rem 0;
+        }
+        .middlecontent{
+            width: 80%;
+            flex-direction: column;
+        }
+        .profile-col{
+            width: 100%;
+            margin-bottom: 2rem;
+            margin-right: 0;
+        }
+        .booking-col{
+            width: 100%;
+        }
+        .booking-con{
+            width: 100%;
+            font-size: 0.8rem;
+        }
+        .shop-image{
+            width: 100%;
+            color:white;
+        }
+
+    }
+
+</style>
+<div class="mx-auto flexRow mt-5 middlecontent">
+    <div class="flexCol profile-col">
+        <div class="profile heading"><h2>Profile: </h2></div>
+        <div class="mx-auto profile-content flexCol">
+            <div class="mx-auto mt-3 mb-3 profile-image">
+                <img class="dp-pic img-fluid" src={{profile.profile_pic.url}} alt="" />
+            </div><br>
+            <div class="flexRow mx-auto profile-info">
+                <div style="color:gold;text-align:right;" class="me-3 mb-3">
+                    <p>name: </p>
+                    <p>mobile: </p>
+                    <p>email: </p>
+                    <p>password: </p>
+                </div>
+                <div style="color: white;">
+                    <p>{{request.user.get_full_name}}</p>
+                    <p>{{profile.mobile}}</p>
+                    <p><span style="font-size: small;">{{profile.email}}</span></p>
+                    <p>*****</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flexCol booking-col mb-0">
+        <div class="booking heading"><h2>Booking History: </h2></div>
+
+        {% for appointment in appointments %}
+            <div class="flexRow mx-auto mb-0 booking-content">
+                <div class="flexRow booking-con">
+                    <div class="pe-3 py-0 query">
+                        <p style="margin-bottom: 0.5rem;">Appointment for:</p>
+                        <p style="margin-bottom: 0.5rem;">Doctor name:</p>
+                        <p style="margin-bottom: 0.5rem;">Date:</p>
+                    </div>
+                    <div  class="py-0 mx-auto info">
+                        <p style="margin-bottom: 0.5rem;">{{ appointment.PatientName }}</p>
+                        <p style="margin-bottom: 0.5rem;">{{ appointment.Service.Doctor }}</p>
+                        <p style="margin-bottom: 0.5rem;">{{ appointment.date }}</p>
+                    </div>
+                </div>
+                <div class="flexCol shop-image">
+                    <div style="width: 50%;height:50%;" class="mx-auto">
+                        <img style="border-radius:50%;" class="img-fluid rounded-circle" src="{{appointment.Service.Clinic.Integer_image.url}}" alt="">
+                    </div>
+                    <p style="font-weight:bold;" class="mx-auto mt-2 shop-name">{{ appointment.Service.Clinic.Name }}</p>
+                    <p style="font-size: 0.7rem;margin-top: -1rem;text-align:center;" class="mx-auto">{{ appointment.Service.Clinic.Address }}</p>
+                </div>
+                
+            </div><hr class="m-0 p-0" >
+        {% endfor %}
+
+        
+
+    </div>
+</div>
+
+{% endblock content %}
+<link rel="stylesheet" href={% static 'css/customer/index.css' %}>

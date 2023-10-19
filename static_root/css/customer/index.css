@@ -1,0 +1,50 @@
+:root {
+  --theme-primrary-yellow: #f2eb9b;
+}
+
+.heading-container {
+  padding-left: 50px;
+  padding-bottom: 10px;
+}
+
+.heading {
+  color: var(--theme-primrary-yellow);
+}
+
+.clinic-container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 10px;
+}
+
+.card {
+  padding: 10px;
+  align-items: center;
+  margin: 30px;
+}
+
+.time-info {
+  display: flex;
+  padding-top: 10px;
+}
+
+.day-time {
+  padding-left: 10px;
+  font-size: 12px;
+}
+
+@media screen {
+}
+
+@media screen and (max-width: 900px) {
+  .clinic-container {
+    grid-template-columns: auto auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .clinic-container {
+    grid-template-columns: auto;
+  }
+}

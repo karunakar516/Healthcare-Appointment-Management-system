@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% load static %} 
+{% block content %}
+<center></center>
+<h1>Clinic Names</h1>
+<br>
+{% for shop in cliniclist %}
+<a href="{% url 'show_details' shop.id %}">{{shop.Name}}</a>
+
+</br>
+</center>
+{% endfor %}
+{% endblock %}
