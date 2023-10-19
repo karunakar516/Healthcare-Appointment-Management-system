@@ -75,3 +75,13 @@ urllib3==1.26.6
 urlman==2.0.1
 wcwidth==0.2.6
 whitenoise==6.6.0
+python3-dev
+
+# C Compiler (e.g., GCC, for building Python extensions)
+build-essential
+
+# GMP (GNU Multiple Precision Arithmetic Library)
+libgmp-dev
+
+# OpenSSL (if needed for cryptographic operations)
+libssl-dev
