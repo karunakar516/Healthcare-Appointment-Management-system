@@ -75,6 +75,3 @@ urllib3==1.26.6
 urlman==2.0.1
 wcwidth==0.2.6
 whitenoise==6.6.0
-build-essential
-libgmp-dev
-libssl-dev
