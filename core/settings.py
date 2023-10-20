@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'watduwant.onrender.com'
+    'watduwant.onrender.com',
+    'www.watduwant.com'
 ]  # ['watduwantapi.pythonanywhere.com']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
