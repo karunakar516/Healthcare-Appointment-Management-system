@@ -47,8 +47,8 @@ psycopg2-binary==2.9.6
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.20
-pycrypto==2.6.1
-pycryptodome==3.19.0
+# pycrypto==2.6.1
+# pycryptodome==3.19.0
 pydantic==2.4.2
 pydantic_core==2.10.1
 Pygments==2.15.1
@@ -75,13 +75,3 @@ urllib3==1.26.6
 urlman==2.0.1
 wcwidth==0.2.6
 whitenoise==6.6.0
-python3-dev
-
-# C Compiler (e.g., GCC, for building Python extensions)
-build-essential
-
-# GMP (GNU Multiple Precision Arithmetic Library)
-libgmp-dev
-
-# OpenSSL (if needed for cryptographic operations)
-libssl-dev
