@@ -17,6 +17,7 @@ django-allauth==0.44.0
 django-cors-headers==3.7.0
 django-extensions==3.2.1
 django-lifecycle==1.0.0
+gunicorn==21.2.0
 django-phonenumber-field==7.1.0
 django-rest-swagger==2.2.0
 djangorestframework==3.12.4
