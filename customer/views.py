@@ -19,6 +19,7 @@ from io import BytesIO
 
 # Create your views here.
 import os
+server_url='watduwant.onrender.com/'
  
 def home(request):
     shops = Shop.objects.all()
@@ -141,7 +142,7 @@ def appointment(request):
             appointment.save()
             oid=Dummy.objects.filter(appointment_user=customer,Service=servicedetaildaytime, PatientName=patient_name,
                                       Age=age, Sex=sex, Status=status, phone=phone, slot_date=date).first()
-            x=PhonePe(merchant_id="PGTESTPAYUAT",phone_pe_salt='099eb0cd-02cf-4e2a-8aca-3e6c6aff0399',phone_pe_host='https://api-preprod.phonepe.com/apis/pg-sandbox',redirect_url='http://127.0.0.1:8000/paymenthandle/',webhook_url='http://127.0.0.1:8000/paymenthandle/',
+            x=PhonePe(merchant_id="PGTESTPAYUAT",phone_pe_salt='099eb0cd-02cf-4e2a-8aca-3e6c6aff0399',phone_pe_host='https://api-preprod.phonepe.com/apis/pg-sandbox',redirect_url=server_url+'paymenthandle/',webhook_url=server_url+'paymenthandle/',
                       redirect_mode= "POST")
             y=x.create_txn(order_id=str(oid.id),user=str(oid.id),amount=service.Fees * 100)
             print(y)
