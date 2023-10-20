@@ -85,6 +85,8 @@ class PhonePe:
             "merchantTransactionId": order_id,
             "merchantUserId": user,
             "amount": int(amount),
+            "redirectUrl": self.redirect_url,
+            "redirectMode": "POST",
             "mobileNumber": "9999999999",
             "callbackUrl": self.webhook_url,
             "paymentInstrument": {
