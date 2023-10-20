@@ -47,6 +47,7 @@ class User(AbstractUser):
     age = models.IntegerField(null=True, blank=True, default=0)
     gender = models.CharField(choices=GENDER_CHOICES.Gender_Choices, max_length=6, null=True, blank=True)
 
+    otp=models.IntegerField(null=True,)
     # extra fields
     mobile = PhoneNumberField(blank=True,unique=True)
     # otp = models.IntegerField(default=rand_otp)  # from web

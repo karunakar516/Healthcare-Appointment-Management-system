@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-&^55ajgaphx+08&&lwrz1rtph&ipzw@f=yv$#(#6h$lsj0rz1t
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'http://127.0.0.1/',
+    '127.0.0.1',
     'watduwant.onrender.com'
 ]  # ['watduwantapi.pythonanywhere.com']
 

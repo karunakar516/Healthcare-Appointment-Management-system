@@ -41,8 +41,6 @@ class SignUpView(View):
                 user.is_active=True
                 user.save()
                 request.session['id'] = user.id
-
-                return redirect('otp-verify')
                 
             else:
                 pass
