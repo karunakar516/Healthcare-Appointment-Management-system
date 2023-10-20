@@ -19,7 +19,7 @@ from io import BytesIO
 
 # Create your views here.
 import os
-server_url='watduwant.onrender.com/'
+server_url='https://watduwant.onrender.com/'
  
 def home(request):
     shops = Shop.objects.all()
