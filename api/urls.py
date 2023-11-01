@@ -4,8 +4,8 @@ from rest_framework.routers import DefaultRouter
 from .views import ShopViewSet, UserViewSet, DoctorViewSet, ServiceViewSet, ServicedetailDayViewSet, \
     ServicedetailDayTimeViewSet, HomeScreenViewset, ViewDoctorViewset, phlebotomistViewset, \
     OrderServiceViewSet, PathoOrdersViewSet, PathologicalTestServiceViewset, AppointmentServicesViewset, \
-    RegisterUserViewSet, UserLogin, ShopAppointmentViewSet, UserAppointmentViewSet, ChangePasswordView,\
-    UserProfileUpdateView,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess
+    RegisterUserViewSet, UserLogin, ShopAppointmentViewSet, UserAppointmentViewSet, ChangePasswordViewSet,\
+    UserProfileUpdateViewSet,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess
 app_name='api'
 router = DefaultRouter()
 router.register('shops', ShopViewSet, basename='shops')
@@ -27,15 +27,16 @@ router.register('phlebotomist', phlebotomistViewset, basename='phlebotomist')
 router.register('order-services', OrderServiceViewSet, basename='order-services')
 router.register('patho-orders', PathoOrdersViewSet, basename='patho-orders')
 router.register('pathoTests', PathologicalTestServiceViewset, basename='pathoTests')
+router.register('profileupdate',UserProfileUpdateViewSet,basename='user')
+router.register('password-change',ChangePasswordViewSet,basename='changepass')
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('login', UserLogin.as_view()),
-    path('passwordreset',ChangePasswordView.as_view(),name='password-reset'),
+    # path('passwordreset',ChangePasswordView.as_view(),name='password-reset'),
     path('home/', HomeScreenViewset.as_view(), name="homescreen"),
     # path('appointments/', AppointmentCreateView.as_view(), name='appointment-create'),
-    path('profile-update',UserProfileUpdateView.as_view(),name='update'),
     path('otp-verify',OTPVerify.as_view(),name='otp'),
     path('payment',PaymentView.as_view(),name='payment'),
     path('payment_success',PaymentSuccess,name='paysuc'),

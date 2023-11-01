@@ -436,33 +436,35 @@ class PathologicalTestServiceViewset(BaseClass):
     def get_queryset(self):
         return Pathological_Test_Service.objects.filter(Shop=self.request.user.shop)
 
-class ChangePasswordView(generics.UpdateAPIView):
-    serializer_class = ChangePasswordSerializer
-    permission_classes = (IsAuthenticated,)
-
-    def update(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            user = request.user
-            old_password = serializer.validated_data.get('old_password')
-            if user.status=='cr':
-                if user.check_password(old_password):
-                    new_password = serializer.validated_data.get('new_password')
-                    user.set_password(new_password)
-                    user.save()
-                    return Response({'message': 'Password changed successfully.'}, status=status.HTTP_200_OK)
-                else:
-                    return Response({'old_password': ['Incorrect password.']}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({'error':'only customer can change password'})
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class UserProfileUpdateView(generics.UpdateAPIView):
-    queryset = User.objects.all()
+class ChangePasswordViewSet(BaseClass):
+    class nodata(APIException):
+        status_code=400
+        default_detail='enter password'
+    class customere(APIException):
+        status_code=400
+        default_detail='user must be customer inorder to change password'
     serializer_class = UserSerializer
+    permission_classes=[IsAuthenticated]
+    def get_queryset(self):
+        return User.objects.filter(email=self.request.user.email)
+    def update(self, request, *args, **kwargs):
+        if 'password' in request.data:
+            user = User.objects.get(email=self.request.user.email)
+            if user.status=='cr':
+                new_password = request.data['password']
+                user.set_password(new_password)
+                user.save()
+                return Response({'message': 'Password changed successfully'})
+            else:
+                raise self.customere()
+        else:
+            raise self.nodata()
+
+class UserProfileUpdateViewSet(BaseClass):
+    serializer_class =UserSerializer
     permission_classes = [IsAuthenticated]
-    def get_object(self):
-        return User.objects.get(email=self.request.user.email)
+    def get_queryset(self):
+        return User.objects.filter(email=self.request.user.email)
 
 
 

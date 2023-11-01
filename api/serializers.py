@@ -123,7 +123,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'age', 'gender', 'mobile', 'profile_pic', 'status', 'city', 'address', 'shop']
+        fields = ['id', 'email', 'age', 'gender', 'mobile', 'profile_pic', 'status', 'city', 'address']
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     number = PhoneNumberField(region="IN")
@@ -466,7 +466,7 @@ class DoctorAppointmentSerializer(serializers.ModelSerializer):
         model= Appointment
         fields= '__all__'
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerialize(serializers.ModelSerializer):
     password=serializers.CharField()
     class Meta:
         model = User
