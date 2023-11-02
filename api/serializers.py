@@ -130,7 +130,7 @@ class PasswordSerializer(serializers.Serializer):
 
 class Userupdateserilaizer(serializers.Serializer):
     email=serializers.EmailField(required=False,default=None)
-    age=serializers.IntegerField(required=False,default=0)
+    age=serializers.IntegerField(required=False,default=None)
     gender=serializers.CharField(required=False,default=None)
     mobile=serializers.IntegerField(required=False,default=None)
     profile_pic=serializers.ImageField(required=False,default=None)
