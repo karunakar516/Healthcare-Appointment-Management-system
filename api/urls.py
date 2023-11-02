@@ -27,8 +27,8 @@ router.register('phlebotomist', phlebotomistViewset, basename='phlebotomist')
 router.register('order-services', OrderServiceViewSet, basename='order-services')
 router.register('patho-orders', PathoOrdersViewSet, basename='patho-orders')
 router.register('pathoTests', PathologicalTestServiceViewset, basename='pathoTests')
-router.register('profileupdate',UserProfileUpdateViewSet,basename='user')
-router.register('password-change',ChangePasswordViewSet,basename='changepass')
+# router.register('profileupdate',UserProfileUpdateViewSet,basename='user')
+# router.register('password-change',ChangePasswordViewSet,basename='changepass')
 
 
 urlpatterns = [
@@ -39,6 +39,8 @@ urlpatterns = [
     # path('appointments/', AppointmentCreateView.as_view(), name='appointment-create'),
     path('otp-verify',OTPVerify.as_view(),name='otp'),
     path('payment',PaymentView.as_view(),name='payment'),
+    path('profileupdate',UserProfileUpdateViewSet.as_view({'patch':'update_user'}),name='user_update'),
+    path('change_password', ChangePasswordViewSet.as_view({'patch': 'set_password'}), name='change_password'),
     path('payment_success',PaymentSuccess,name='paysuc'),
     #  path('dj-rest-auth/', include('dj_rest_auth.urls')),
     #  path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),

@@ -125,6 +125,19 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'email', 'age', 'gender', 'mobile', 'profile_pic', 'status', 'city', 'address']
 
+class PasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True, write_only=True, min_length=8)
+
+class Userupdateserilaizer(serializers.Serializer):
+    email=serializers.EmailField(required=False,default=None)
+    age=serializers.IntegerField(required=False,default=0)
+    gender=serializers.CharField(required=False,default=None)
+    mobile=serializers.IntegerField(required=False,default=None)
+    profile_pic=serializers.ImageField(required=False,default=None)
+    city=serializers.CharField(required=False,default=None)
+    address=serializers.CharField(required=False,default=None)
+
+
 class RegisterUserSerializer(serializers.ModelSerializer):
     number = PhoneNumberField(region="IN")
     age = serializers.IntegerField(required=True)

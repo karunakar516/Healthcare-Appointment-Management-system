@@ -1,4 +1,5 @@
 from rest_framework import viewsets,generics,status
+from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import Token
 from rest_framework.exceptions import APIException
@@ -54,7 +55,9 @@ from .serializers import (
     ChangePasswordSerializer,
     DoctorAppointmentSerializer,
     OTPSerializer,
-    PaymentDataSerializer
+    PaymentDataSerializer,
+    PasswordSerializer,
+    Userupdateserilaizer
     # CreateAppointmentSerializer
 )
 from .static_variables import USER_STATUS
@@ -98,6 +101,8 @@ class UserLogin(APIView):
                         'user_id': user.pk,
                         'mobile': user.mobile.national_number
                     })
+                else:
+                    return Response(status=400,data={"error":"invalid password"})
             else:
                 return Response({
                     "email/mobile": "NULL",
@@ -443,28 +448,50 @@ class ChangePasswordViewSet(BaseClass):
     class customere(APIException):
         status_code=400
         default_detail='user must be customer inorder to change password'
-    serializer_class = UserSerializer
-    permission_classes=[IsAuthenticated]
-    def get_queryset(self):
-        return User.objects.filter(email=self.request.user.email)
-    def update(self, request, *args, **kwargs):
-        if 'password' in request.data:
-            user = User.objects.get(email=self.request.user.email)
-            if user.status=='cr':
-                new_password = request.data['password']
-                user.set_password(new_password)
-                user.save()
-                return Response({'message': 'Password changed successfully'})
-            else:
-                raise self.customere()
+
+    @action(detail=True, methods=['patch'])
+    def set_password(self, request, pk=None):
+        user = User.objects.get(email=self.request.user.email)
+        if user.status!='cr':
+            raise self.customere()
+        serializer = PasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            user.set_password(serializer.validated_data['password'])
+            user.save()
+            return Response({'status': 'password set'})
         else:
-            raise self.nodata()
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfileUpdateViewSet(BaseClass):
     serializer_class =UserSerializer
     permission_classes = [IsAuthenticated]
     def get_queryset(self):
         return User.objects.filter(email=self.request.user.email)
+    @action(detail=True, methods=['patch'])
+    def update_user(self, request, pk=None):
+        user = User.objects.get(email=self.request.user.email)
+        serializer = Userupdateserilaizer(data=request.data)
+        if serializer.is_valid():
+            if(serializer.validated_data['email']):
+                
+                user.email=serializer.validated_data['email']
+            if(serializer.validated_data['age']):
+                print('hello')
+                user.age=serializer.validated_data['age']
+            if(serializer.validated_data['gender']):
+                user.gender=serializer.validated_data['gender']
+            if(serializer.validated_data['mobile']):
+                user.mobile=serializer.validated_data['mobile']
+            if(serializer.validated_data['profile_pic']):
+                user.profile_pic=serializer.validated_data['profile_pic']
+            if(serializer.validated_data['city']):
+                user.city=serializer.validated_data['city']
+            if(serializer.validated_data['address']):
+                user.address=serializer.validated_data['address']
+            user.save()
+            return Response({'status': 'profile updated'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
