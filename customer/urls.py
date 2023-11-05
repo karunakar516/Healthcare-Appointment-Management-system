@@ -11,6 +11,7 @@ urlpatterns = [
     path('cart/', views.showCart, name="cart"),
     path('updateAddress/', views.updateAddress, name="updateAddress"),
     path('paymentHandler/', views.paymentHandler, name="paymentHandler"),
-    path('paymenthandle/',views.handlepayment,name='paymenthandle')
+    path('paymenthandle/',views.handlepayment,name='paymenthandle'),
+    path('recharge',views.recharge,name='recharge')
     # path('list', views.all_list, name='clinic_list'),
 ]

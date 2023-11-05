@@ -240,4 +240,6 @@ def handlepayment(request):
         messages.failure(
                 request, "Your payment is failed please try again ")
         return HttpResponseRedirect(reverse('customer-home'))
-        
+@csrf_exempt    
+def recharge(request):
+    return render(request,'customer/recharge.html')

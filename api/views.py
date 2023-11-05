@@ -557,6 +557,7 @@ class Recharge(viewsets.ViewSet):
         status_code=400
         default_detail='please select valid operator'
     @action(detail=True,methods=['post'])
+    @csrf_exempt
     def recharge(self,request):
         serializer=RechargeSerializer(data=request.data)
         UserID='11225'
