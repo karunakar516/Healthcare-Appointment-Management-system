@@ -5,7 +5,7 @@ from .views import ShopViewSet, UserViewSet, DoctorViewSet, ServiceViewSet, Serv
     ServicedetailDayTimeViewSet, HomeScreenViewset, ViewDoctorViewset, phlebotomistViewset, \
     OrderServiceViewSet, PathoOrdersViewSet, PathologicalTestServiceViewset, AppointmentServicesViewset, \
     RegisterUserViewSet, UserLogin, ShopAppointmentViewSet, UserAppointmentViewSet, ChangePasswordViewSet,\
-    UserProfileUpdateViewSet,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess
+    UserProfileUpdateViewSet,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess,Recharge
 app_name='api'
 router = DefaultRouter()
 router.register('shops', ShopViewSet, basename='shops')
@@ -37,6 +37,7 @@ urlpatterns = [
     # path('passwordreset',ChangePasswordView.as_view(),name='password-reset'),
     path('home/', HomeScreenViewset.as_view(), name="homescreen"),
     # path('appointments/', AppointmentCreateView.as_view(), name='appointment-create'),
+    path('recharge',Recharge.as_view({'post':'recharge'}),name='recharge'),
     path('otp-verify',OTPVerify.as_view(),name='otp'),
     path('payment',PaymentView.as_view(),name='payment'),
     path('profileupdate',UserProfileUpdateViewSet.as_view({'patch':'update_user'}),name='user_update'),

@@ -514,3 +514,9 @@ class OTPSerializer(serializers.ModelSerializer):
 
 class PaymentDataSerializer(serializers.Serializer):
     appointment_id = serializers.IntegerField()
+
+class RechargeSerializer(serializers.Serializer):
+    recharge_type=serializers.CharField()
+    mobile_or_dth=serializers.IntegerField()
+    amount=serializers.IntegerField()
+    operator=serializers.CharField()

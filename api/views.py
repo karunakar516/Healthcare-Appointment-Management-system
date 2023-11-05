@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 from twilio.rest import Client
 from .test import PhonePe
 from django.urls import reverse
-import hashlib,base64
+import hashlib,base64,requests,json
 from store.models import (
     Phlebotomist,
     Shop,
@@ -31,6 +31,7 @@ from store.models import (
     Pathological_Test_Service
 )
 from .serializers import (
+    RechargeSerializer,
     RegisterUserSerializer,
     ShopSerializer,
     DoctorSerializer,
@@ -549,3 +550,92 @@ def PaymentSuccess(request):
     if request.method=="POST":
         return JsonResponse(request.POST)
     return JsonResponse(request.REDIRECT)
+
+
+class Recharge(viewsets.ViewSet):
+    class valoper(APIException):
+        status_code=400
+        default_detail='please select valid operator'
+    @action(detail=True,methods=['post'])
+    def recharge(self,request):
+        serializer=RechargeSerializer(data=request.data)
+        UserID='11225'
+        Token='51a0ff2d7539d8e7c9e54ea0500d7d44'
+        GEOCode='77.49,27.20'
+        CustomerNumber='8013791311'
+        Pincode='700130'
+        SPKey=''
+        if serializer.is_valid():
+            recharge_type=serializer.validated_data['recharge_type'].lower()
+            operator=serializer.validated_data['operator'].lower()
+            mob_or_dth_num=serializer.validated_data['mobile_or_dth']
+            amount=serializer.validated_data['amount']
+            APIRequestID=str(mob_or_dth_num)
+            if(recharge_type=='mobile'):
+                operators={
+                    "airtel":'3',
+                    "bsnl":'4',
+                    "idea":'12',
+                    "vodafone":'37',
+                    "jio":'116'
+                }
+                if operator not in operators:
+                    raise self.valoper()
+                SPKey=operators[operator]
+                url = "https://roundpay.net/API/TransactionAPI"
+                headers = {
+                    'Content-Type': 'application/json'
+                }
+                params={
+                    'UserID': UserID,
+                    'Token': Token,
+                    'Account': mob_or_dth_num,
+                    'Amount': amount,
+                    'SPKey' :SPKey,
+                    'APIRequestID': APIRequestID,
+                    'GEOCode':GEOCode,
+                    'CustomerNumber':CustomerNumber,
+                    'Pincode':Pincode,
+                    'Format':1
+                }
+                response_r = requests.get(url=url,headers=headers,params=params)
+                print(response_r)
+                if response_r.status_code==200:
+                    response_dict = json.loads(response_r.text) 
+                    return Response(response_dict)
+                else:
+                    return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
+            elif recharge_type=='dth':
+                operators={
+                    "dishtv":'53',
+                    'tatasky':'55',
+                    'airtel digital':'51',
+                    'videocon':'56',
+                    'sundirect':'54'
+                }
+                if operator not in operators:
+                    raise self.valoper()
+                SPKey=operators[operator]
+                url = 'https://roundpay.net/API/TransactionAPI'
+                params={
+                    'UserID': UserID,
+                    'Token': Token,
+                    'Account': mob_or_dth_num,
+                    'Amount': amount,
+                    'SPKey' :SPKey,
+                    'APIRequestID': APIRequestID,
+                    'GEOCode':GEOCode,
+                    'CustomerNumber':CustomerNumber,
+                    'Pincode':Pincode,
+                    'Format':1
+                }
+                headers = {
+                    'Content-Type': 'application/json'
+                }
+                response_r = requests.get(url,headers=headers,params=params)
+                
+                if response_r.status_code==200:
+                    response_dict = json.loads(response_r.text) 
+                    return Response(response_dict)
+                else:
+                    return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
