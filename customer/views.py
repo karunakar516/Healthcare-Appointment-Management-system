@@ -300,7 +300,7 @@ def recharge(request):
         recharge=Recharge(number=number,amount=amount,rechargeType=rechargeType,operator=operator,created_at=current_time)
         recharge.save()
         recharge_obj=Recharge.objects.get(number=number,amount=amount,rechargeType=rechargeType,operator=operator,created_at=current_time)
-        x=PhonePe(merchant_id="PGTESTPAYUAT",phone_pe_salt='099eb0cd-02cf-4e2a-8aca-3e6c6aff0399',phone_pe_host='https://api-preprod.phonepe.com/apis/pg-sandbox',redirect_url='https://watduwant.onrender.com/rechargehandle/',webhook_url='https://watduwant.onrender.com/rechargehandle/',
+        x=PhonePe(merchant_id="PGTESTPAYUAT",phone_pe_salt='099eb0cd-02cf-4e2a-8aca-3e6c6aff0399',phone_pe_host='https://api-preprod.phonepe.com/apis/pg-sandbox',redirect_url='https://www.watduwant.com/rechargehandle/',webhook_url='https://www.watduwant.com/rechargehandle/',
                       redirect_mode= "POST")
         y=x.create_txn(order_id=str(recharge_obj.id),user=str(recharge_obj.id),amount=recharge_obj.amount * 100)
         print(y)
