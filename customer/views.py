@@ -275,7 +275,7 @@ def handlerecharge(request):
                         messages.success(request, "Your Recharge is success")
                         return HttpResponseRedirect(reverse('customer-home'))
                     elif response_data['status'] == 3:
-                        messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :")
+                        messages.success(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :")
                         return HttpResponseRedirect(reverse('customer-home'))
 
             except Exception as error:
