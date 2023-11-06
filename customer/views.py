@@ -247,6 +247,10 @@ def handlerecharge(request):
     if request.method=='POST':
         x=request.POST
         print(x)
+        merchantid=x.get('merchantId')
+        transactionId=x.get('transactionId')
+        prid=x.get('providerReferenceId')
+        details_message='merchant id is:'+str(merchantid)+',transaction id is:'+str(transactionId)+',provider reference id is:'+str(prid)
         if x.get('code')=='PAYMENT_SUCCESS':
             recharge_obj=Recharge.objects.get(pk=x.get('transactionId'))
             api_url = 'https://www.watduwant.com/api/recharge'
@@ -267,7 +271,7 @@ def handlerecharge(request):
                 response = requests.post(api_url, json=request_data, headers=headers)
 
                 if not response.ok:
-                    messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :")
+                    messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :",details_message)
                     return HttpResponseRedirect(reverse('customer-home'))
                 response_data = response.json()
                 if response.ok:
@@ -275,7 +279,7 @@ def handlerecharge(request):
                         messages.success(request, "Your Recharge is success")
                         return HttpResponseRedirect(reverse('customer-home'))
                     elif response_data['status'] == 3:
-                        messages.success(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :",x)
+                        messages.success(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :",details_message)
                         return HttpResponseRedirect(reverse('customer-home'))
 
             except Exception as error:
