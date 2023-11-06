@@ -269,9 +269,9 @@ def handlerecharge(request):
                     'X-CSRFToken': csrf_token
                 }
                 response = requests.post(api_url, json=request_data, headers=headers)
-
+                failure_message="Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :"+details_message
                 if not response.ok:
-                    messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :",details_message)
+                    messages.failure(request, failure_message)
                     return HttpResponseRedirect(reverse('customer-home'))
                 response_data = response.json()
                 if response.ok:
@@ -279,7 +279,7 @@ def handlerecharge(request):
                         messages.success(request, "Your Recharge is success")
                         return HttpResponseRedirect(reverse('customer-home'))
                     elif response_data['status'] == 3:
-                        messages.success(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :",details_message)
+                        messages.success(request, failure_message)
                         return HttpResponseRedirect(reverse('customer-home'))
 
             except Exception as error:
