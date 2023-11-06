@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from django.contrib.auth.hashers import check_password
 from random import randint
-from datetime import timedelta
+from datetime import timedelta,datetime
 from django.utils import timezone
 from django.http import HttpResponseRedirect,JsonResponse,HttpResponse
 from .models import OTP
@@ -571,7 +571,9 @@ class Recharge(viewsets.ViewSet):
             operator=serializer.validated_data['operator'].lower()
             mob_or_dth_num=serializer.validated_data['mobile_or_dth']
             amount=serializer.validated_data['amount']
-            APIRequestID=str(mob_or_dth_num)
+            now=datetime.now()
+            current_time=now.strftime("%H:%M:%S")
+            APIRequestID=str(mob_or_dth_num)+str(current_time)
             if(recharge_type=='mobile'):
                 operators={
                     "airtel":'3',
