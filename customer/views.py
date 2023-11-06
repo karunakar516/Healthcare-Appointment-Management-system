@@ -3,10 +3,10 @@ from auth_app.models import User
 from django.contrib.auth.decorators import login_required
 from store.models import ServiceDetailsDay, Shop, ServiceDetailsDayTime, Service, Doctor, OrderService, Pathological_Test_Service, Cart, Order
 from django.shortcuts import render, redirect
-from .models import Appointment,Dummy
+from .models import Appointment,Dummy,Recharge
 from django.contrib import messages
 import datetime
-import json
+import json,requests
 import razorpay
 from django.views.decorators.csrf import csrf_exempt
 from .templatetags.custom_tags import get_date
@@ -240,6 +240,74 @@ def handlepayment(request):
         messages.failure(
                 request, "Your payment is failed please try again ")
         return HttpResponseRedirect(reverse('customer-home'))
+    
+
+@csrf_exempt
+def handlerecharge(request):
+    if request.method=='POST':
+        x=request.POST
+        print(x)
+        if x.get('code')=='PAYMENT_SUCCESS':
+            recharge_obj=Recharge.objects.get(pk=x.get('transactionId'))
+            api_url = 'https://www.watduwant.com/api/recharge'
+            csrf_token = get_csrf_token()
+
+            request_data = {
+                'mobile_or_dth':recharge_obj.number,
+                'amount':recharge_obj.amount,
+                'operator':recharge_obj.operator,
+                'recharge_type':recharge_obj.rechargeType
+            }
+
+            try:
+                headers = {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token
+                }
+                response = requests.post(api_url, json=request_data, headers=headers)
+
+                if not response.ok:
+                    messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :")
+                    return HttpResponseRedirect(reverse('customer-home'))
+                response_data = response.json()
+                if response.ok:
+                    if response_data['status'] == 1:
+                        messages.success(request, "Your Recharge is success")
+                        return HttpResponseRedirect(reverse('customer-home'))
+                    elif response_data['status'] == 3:
+                        messages.failure(request, "Your recharge is failed kindly use these transaction details to get refund your transaction deatils are :")
+                        return HttpResponseRedirect(reverse('customer-home'))
+
+            except Exception as error:
+                print(f'API request error: {error}')
+            messages.success(
+                request, "Your payment is success and request has been received and we'll notify you shortly about the confirmation.")
+            return HttpResponseRedirect(reverse('customer-home'))
+        messages.failure(
+                request, "Your payment is failed please try again ")
+        return HttpResponseRedirect(reverse('customer-home'))
+
+
 @csrf_exempt    
 def recharge(request):
+    if request.method=='POST':
+        number=request.POST.get('number')
+        amount=request.POST.get('amount')
+        rechargeType=request.POST.get('rechargeType')
+        operator=request.POST.get('operator')
+        now=datetime.datetime.now()
+        current_time=now.strftime("%H:%M:%S")
+        recharge=Recharge(number=number,amount=amount,rechargeType=rechargeType,operator=operator,created_at=current_time)
+        recharge.save()
+        recharge_obj=Recharge.objects.get(number=number,amount=amount,rechargeType=rechargeType,operator=operator,created_at=current_time)
+        x=PhonePe(merchant_id="PGTESTPAYUAT",phone_pe_salt='099eb0cd-02cf-4e2a-8aca-3e6c6aff0399',phone_pe_host='https://api-preprod.phonepe.com/apis/pg-sandbox',redirect_url='https://watduwant.onrender.com/paymenthandle/',webhook_url='https://watduwant.onrender.com/paymenthandle/',
+                      redirect_mode= "POST")
+        y=x.create_txn(order_id=str(recharge_obj.id),user=str(recharge_obj.id),amount=recharge_obj.amount * 100)
+        print(y)
+        return redirect(y['data']['instrumentResponse']['redirectInfo']['url'])
     return render(request,'customer/recharge.html')
+
+
+
+def get_csrf_token():
+    return None

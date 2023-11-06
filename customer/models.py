@@ -124,3 +124,10 @@ class Dummy(LifecycleModel):
     payment_status=models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+class Recharge(models.Model):
+    number=models.CharField(max_length=50)
+    amount=models.PositiveIntegerField()
+    rechargeType=models.CharField(max_length=30)
+    operator=models.CharField(max_length=50)
+    created_at = models.CharField(max_length=50)

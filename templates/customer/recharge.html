@@ -43,7 +43,8 @@
     <div class="container">
         <h1 class="mt-4 mb-4">Mobile/DTH Recharge</h1>
 
-        <form id="rechargeForm">
+        <form id="rechargeForm" method="post" action="{% url 'recharge'%}">
+            <!-- {% csrf_token %} -->
             <div class="form-group">
                 <label for="number">Mobile/DTH Number:</label>
                 <input type="text" class="form-control" id="number" name="number" required>
@@ -106,67 +107,67 @@
         populateOperatorOptions();
         rechargeTypeSelect.addEventListener('change', populateOperatorOptions);
 
-        rechargeForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // rechargeForm.addEventListener('submit', async (e) => {
+        //     e.preventDefault();
 
-            const formData = new FormData(rechargeForm);
+        //     const formData = new FormData(rechargeForm);
 
-            const requestBody = {
-                mobile_or_dth: formData.get('number'),
-                amount: formData.get('amount'),
-                operator: formData.get('operator'),
-                recharge_type: formData.get('rechargeType'),
-            };
+        //     const requestBody = {
+        //         mobile_or_dth: formData.get('number'),
+        //         amount: formData.get('amount'),
+        //         operator: formData.get('operator'),
+        //         recharge_type: formData.get('rechargeType'),
+        //     };
 
-            async function makeApiRequest() {
-            const apiUrl = 'https://www.watduwant.com/api/recharge'; 
-            const csrfToken = getCsrfToken(); 
+        //     async function makeApiRequest() {
+        //     const apiUrl = 'https://www.watduwant.com/api/recharge'; 
+        //     const csrfToken = getCsrfToken(); 
 
-            const requestData = requestBody
+        //     const requestData = requestBody
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
-                    },
-                    credentials: 'include', // Include cookies in the request
-                    body: JSON.stringify(requestData),
-                });
+        //     try {
+        //         const response = await fetch(apiUrl, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+        //             },
+        //             credentials: 'include', // Include cookies in the request
+        //             body: JSON.stringify(requestData),
+        //         });
 
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
+        //         if (!response.ok) {
+        //             throw new Error(`API request failed with status ${response.status}`);
+        //         }
 
-                const responseData = await response.json();
-                if (response.ok) {
-                    if(responseData.status==1)
-                    responseDiv.innerHTML = `<div class="alert alert-success">Recharge successful to : ${responseData.account}</div>`;
-                    else if(responseData.status==3)
-                    responseDiv.innerHTML = `<div class="alert alert-failure">Recharge failed. Reason: ${responseData.msg}</div>`;
-                    else if(responseData.status==2)
-                    responseDiv.innerHTML = `<div class="alert alert-failure">Recharge Pending...</div>`;
+        //         const responseData = await response.json();
+        //         if (response.ok) {
+        //             if(responseData.status==1)
+        //             responseDiv.innerHTML = `<div class="alert alert-success">Recharge successful to : ${responseData.account}</div>`;
+        //             else if(responseData.status==3)
+        //             responseDiv.innerHTML = `<div class="alert alert-failure">Recharge failed. Reason: ${responseData.msg}</div>`;
+        //             else if(responseData.status==2)
+        //             responseDiv.innerHTML = `<div class="alert alert-failure">Recharge Pending...</div>`;
 
-                }
-            } catch (error) {
-                console.error('API request error:', error);
-            }
-        }
+        //         }
+        //     } catch (error) {
+        //         console.error('API request error:', error);
+        //     }
+        // }
 
-        function getCsrfToken() {
-            const cookies = document.cookie.split(';');
-            for (const cookie of cookies) {
-                const [name, value] = cookie.trim().split('=');
-                if (name === 'csrftoken') {
-                    return value;
-                }
-            }
-            return '';
-        }
+        // function getCsrfToken() {
+        //     const cookies = document.cookie.split(';');
+        //     for (const cookie of cookies) {
+        //         const [name, value] = cookie.trim().split('=');
+        //         if (name === 'csrftoken') {
+        //             return value;
+        //         }
+        //     }
+        //     return '';
+        // }
 
-        makeApiRequest();
-    })
+        // makeApiRequest();
+    // })
     </script>
 </body>
 </html>

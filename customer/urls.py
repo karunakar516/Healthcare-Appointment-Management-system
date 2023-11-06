@@ -12,6 +12,7 @@ urlpatterns = [
     path('updateAddress/', views.updateAddress, name="updateAddress"),
     path('paymentHandler/', views.paymentHandler, name="paymentHandler"),
     path('paymenthandle/',views.handlepayment,name='paymenthandle'),
-    path('recharge',views.recharge,name='recharge')
+    path('recharge',views.recharge,name='recharge'),
+    path('rechargehandle/',views.handlerecharge,name='rechargehandle')
     # path('list', views.all_list, name='clinic_list'),
 ]
