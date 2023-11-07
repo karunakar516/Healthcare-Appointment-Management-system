@@ -38,6 +38,8 @@ class Appointment(LifecycleModel):
     time = models.TimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    payment_status=models.BooleanField(default=False)
+    wallet_status=models.BooleanField(default=False)
 
     def __str__(self):
         # return self.appointment_user.email + "--" + str(self.Service.Time)
@@ -131,3 +133,5 @@ class Recharge(models.Model):
     rechargeType=models.CharField(max_length=30)
     operator=models.CharField(max_length=50)
     created_at = models.CharField(max_length=50)
+    payment_status=models.BooleanField(default=False)
+    wallet_status=models.BooleanField(default=False)

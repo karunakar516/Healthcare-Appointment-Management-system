@@ -5,7 +5,8 @@ from .views import ShopViewSet, UserViewSet, DoctorViewSet, ServiceViewSet, Serv
     ServicedetailDayTimeViewSet, HomeScreenViewset, ViewDoctorViewset, phlebotomistViewset, \
     OrderServiceViewSet, PathoOrdersViewSet, PathologicalTestServiceViewset, AppointmentServicesViewset, \
     RegisterUserViewSet, UserLogin, ShopAppointmentViewSet, UserAppointmentViewSet, ChangePasswordViewSet,\
-    UserProfileUpdateViewSet,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess,Recharge
+    UserProfileUpdateViewSet,AppointmentViewSet,DoctorshopAppointmentViewSet,OTPVerify,PaymentView,PaymentSuccess,Recharge,\
+    Add_wallet_balance,Remove_wallet_balance
 app_name='api'
 router = DefaultRouter()
 router.register('shops', ShopViewSet, basename='shops')
@@ -42,6 +43,8 @@ urlpatterns = [
     path('payment',PaymentView.as_view(),name='payment'),
     path('profileupdate',UserProfileUpdateViewSet.as_view({'patch':'update_user'}),name='user_update'),
     path('change_password', ChangePasswordViewSet.as_view({'patch': 'set_password'}), name='change_password'),
+    path('addwalletbalance',Add_wallet_balance.as_view({'post':'add_balance'}),name='addbalance'),
+    path('removewalletbalance',Remove_wallet_balance.as_view({'post':"remove_balance"}),name='removebalance'),
     path('payment_success',PaymentSuccess,name='paysuc'),
     #  path('dj-rest-auth/', include('dj_rest_auth.urls')),
     #  path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),

@@ -231,8 +231,8 @@ def handlepayment(request):
         x=request.POST
         if x.get('code')=='PAYMENT_SUCCESS':
             dummy_ob=Dummy.objects.get(pk=x.get('transactionId'))
-            appointment = Dummy(appointment_user=dummy_ob.appointment_user,Service=dummy_ob.Service, PatientName=dummy_ob.PatientName,
-                                      Age=dummy_ob.Age, Sex=dummy_ob.Sex, Status=dummy_ob.Status, phone=dummy_ob.phone, slot_date=dummy_ob.slot_date)
+            appointment = Appointment(appointment_user=dummy_ob.appointment_user,Service=dummy_ob.Service, PatientName=dummy_ob.PatientName,
+                                      Age=dummy_ob.Age, Sex=dummy_ob.Sex, Status=dummy_ob.Status, phone=dummy_ob.phone, slot_date=dummy_ob.slot_date,payment_status=True)
             appointment.save()
             messages.success(
                 request, "Your payment is success and request has been received and we'll notify you shortly about the confirmation.")
@@ -262,7 +262,7 @@ def handlerecharge(request):
                 'operator':recharge_obj.operator,
                 'recharge_type':recharge_obj.rechargeType
             }
-
+            recharge_obj.delete()
             try:
                 headers = {
                     'Content-Type': 'application/json',

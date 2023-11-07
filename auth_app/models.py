@@ -42,6 +42,7 @@ class User(AbstractUser):
     forgot_password = models.CharField(max_length=100, null=True, blank=True)
     last_login_time = models.DateTimeField(null=True, blank=True)
     last_logout_time = models.DateTimeField(null=True, blank=True)
+    wallet_balance=models.PositiveIntegerField(default=0)
     objects = UserManager()
 
     age = models.IntegerField(null=True, blank=True, default=0)

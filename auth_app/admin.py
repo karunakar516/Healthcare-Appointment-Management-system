@@ -65,7 +65,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('mobile', 'first_name', 'last_name', 'profile_pic', 'status', 'last_login', 'date_joined', 'forgot_password')}),
-        ('Billing Address', {'fields': ('city', 'address', 'flat_name', 'landmark', 'pincode')}),
+        ('Billing Address', {'fields': ('city', 'address', 'flat_name', 'landmark', 'pincode','wallet_balance')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser', 'is_PhoneVerified', 'is_EmailVerified', 'email_token', 'last_login_time', 'last_logout_time')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin

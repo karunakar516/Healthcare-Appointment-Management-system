@@ -20,6 +20,7 @@ from twilio.rest import Client
 from .test import PhonePe
 from django.urls import reverse
 import hashlib,base64,requests,json
+from customer.models import Appointment,Recharge
 from store.models import (
     Phlebotomist,
     Shop,
@@ -58,7 +59,9 @@ from .serializers import (
     OTPSerializer,
     PaymentDataSerializer,
     PasswordSerializer,
-    Userupdateserilaizer
+    Userupdateserilaizer,
+    AddBalanceSerializer,
+    RemoveBalanceSerializer
     # CreateAppointmentSerializer
 )
 from .static_variables import USER_STATUS
@@ -553,6 +556,7 @@ def PaymentSuccess(request):
 
 
 class Recharge(viewsets.ViewSet):
+
     class valoper(APIException):
         status_code=400
         default_detail='please select valid operator'
@@ -602,8 +606,15 @@ class Recharge(viewsets.ViewSet):
                     'Format':1
                 }
                 response_r = requests.get(url=url,headers=headers,params=params)
+                now=datetime.datetime.now()
+                current_time=now.strftime("%H:%M:%S")
+                recharge=Recharge(number=mob_or_dth_num,amount=amount,rechargeType='mobile',operator=operator,created_at=current_time)
+                recharge.save()
                 print(response_r)
                 if response_r.status_code==200:
+                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
+                    recharge_obj.payment_status=True
+                    recharge_obj.save()
                     response_dict = json.loads(response_r.text) 
                     return Response(response_dict)
                 else:
@@ -636,9 +647,81 @@ class Recharge(viewsets.ViewSet):
                     'Content-Type': 'application/json'
                 }
                 response_r = requests.get(url,headers=headers,params=params)
-                
+                now=datetime.datetime.now()
+                current_time=now.strftime("%H:%M:%S")
+                recharge=Recharge(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
+                recharge.save()
                 if response_r.status_code==200:
+                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
+                    recharge_obj.payment_status=True
+                    recharge_obj.save()
                     response_dict = json.loads(response_r.text) 
                     return Response(response_dict)
                 else:
                     return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
+                
+
+class Add_wallet_balance(viewsets.ViewSet):
+    permission_classes=[IsAuthenticated]
+    class customexception(APIException):
+        status_code=400
+        default_detail='only customers have wallet'
+    @action(detail=True,methods=['post'])
+    @csrf_exempt
+    def add_balance(self,request):
+        serializer=AddBalanceSerializer(data=request.data)
+        if serializer.is_valid():
+            type=serializer.validated_data['type'].lower()
+            objectid=serializer.validated_data['objectid']
+            user = User.objects.get(email=self.request.user.email)
+            if user.status!='cr':
+                raise self.customexception()
+            if type=='appointment':
+                obj=Appointment.objects.get(id=objectid)
+                if obj.payment_status==True and obj.wallet_status==False:
+                    rate=5
+                    user.wallet_balance+=(rate*obj.Service.ServiceDetailsDayID.ServiceID.Fees)//100
+                    user.save()
+                    obj.wallet_status=True
+                    obj.save()
+                    return Response(status=200,data={'message':'succesfully added wallet balance'})
+                elif obj.payment_status==False:
+                    return Response(status=400,data={'message':'payment not succeded'})
+                elif obj.wallet_status==True:
+                    return Response(status=400,data={'message':'already wallet balance has been added for this'})
+            obj=Recharge.objects.get(id=objectid)
+            if obj.payment_status==True and obj.wallet_status==False:
+                rate=1
+                user.wallet_balance+=(rate*obj.Service.Fees)//100
+                user.save()
+                obj.wallet_status=True
+                return Response(status=200,data={'message':'succesfully added wallet balance'})
+            elif obj.payment_status==False:
+                return Response(status=400,data={'message':'payment not succeded'})
+            elif obj.wallet_status==True:
+                return Response(status=400,data={'message':'already wallet balance has been added for this'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            
+                
+class Remove_wallet_balance(viewsets.ViewSet):
+    permission_classes=[IsAuthenticated]
+    class customexception(APIException):
+        status_code=400
+        default_detail='only customers have wallet'
+    @action(detail=True,methods=['post'])
+    @csrf_exempt
+    def remove_balance(self,request):
+        serializer=RemoveBalanceSerializer(data=request.data)
+        if serializer.is_valid():
+            amount=serializer.validated_data['amount']
+            user = User.objects.get(email=self.request.user.email)
+            if user.status=='cr':
+                user.wallet_balance-=amount
+                user.save()
+                return Response(data={"message":'removed successfully'},status=200)
+            raise self.customexception()
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

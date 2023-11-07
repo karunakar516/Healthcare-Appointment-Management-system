@@ -520,3 +520,9 @@ class RechargeSerializer(serializers.Serializer):
     mobile_or_dth=serializers.IntegerField()
     amount=serializers.IntegerField()
     operator=serializers.CharField()
+
+class AddBalanceSerializer(serializers.Serializer):
+    type=serializers.CharField()
+    objectid=serializers.IntegerField()
+class RemoveBalanceSerializer(serializers.Serializer):
+    amount=serializers.IntegerField()
