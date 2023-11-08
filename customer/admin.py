@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Appointment
+from .models import Appointment,Recharge
 
 
 # Register your models here.
@@ -9,3 +9,4 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Appointment, AppointmentAdmin)
+admin.site.register(Recharge)

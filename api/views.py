@@ -651,10 +651,13 @@ class Rechargeviewset(viewsets.ViewSet):
                 recharge=Recharge(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
                 recharge.save()
                 if response_r.status_code==200:
-                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
-                    recharge_obj.payment_status=True
-                    recharge_obj.save()
+                    print(response_dict)
                     response_dict = json.loads(response_r.text) 
+                    if response_dict['status'] == 1:
+                        recharge.payment_status=True
+                        recharge.save()
+                    else:
+                        recharge.delete()
                     return Response(response_dict)
                 else:
                     return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
@@ -679,7 +682,7 @@ class Add_wallet_balance(viewsets.ViewSet):
                 obj=Appointment.objects.get(id=objectid)
                 if obj.payment_status==True and obj.wallet_status==False:
                     rate=5
-                    user.wallet_balance+=(rate*obj.Service.ServiceDetailsDayID.ServiceID.Fees)//100
+                    user.wallet_balance+=(rate*obj.Service.ServiceDetailsDayID.ServiceID.Fees)/100
                     user.save()
                     obj.wallet_status=True
                     obj.save()
@@ -691,9 +694,10 @@ class Add_wallet_balance(viewsets.ViewSet):
             obj=Recharge.objects.get(id=objectid)
             if obj.payment_status==True and obj.wallet_status==False:
                 rate=1
-                user.wallet_balance+=(rate*obj.amount)//100
+                user.wallet_balance+=(rate*obj.amount)/100
                 user.save()
                 obj.wallet_status=True
+                obj.save()
                 return Response(status=200,data={'message':'succesfully added wallet balance'})
             elif obj.payment_status==False:
                 return Response(status=400,data={'message':'payment not succeded'})
