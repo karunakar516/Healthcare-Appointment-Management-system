@@ -555,8 +555,7 @@ def PaymentSuccess(request):
     return JsonResponse(request.REDIRECT)
 
 
-class Recharge(viewsets.ViewSet):
-
+class Rechargeviewset(viewsets.ViewSet):
     class valoper(APIException):
         status_code=400
         default_detail='please select valid operator'
@@ -606,13 +605,13 @@ class Recharge(viewsets.ViewSet):
                     'Format':1
                 }
                 response_r = requests.get(url=url,headers=headers,params=params)
-                now=datetime.datetime.now()
+                now=datetime.now()
                 current_time=now.strftime("%H:%M:%S")
                 recharge=Recharge(number=mob_or_dth_num,amount=amount,rechargeType='mobile',operator=operator,created_at=current_time)
                 recharge.save()
                 print(response_r)
                 if response_r.status_code==200:
-                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
+                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='mobile',operator=operator,created_at=current_time)
                     recharge_obj.payment_status=True
                     recharge_obj.save()
                     response_dict = json.loads(response_r.text) 
@@ -692,7 +691,7 @@ class Add_wallet_balance(viewsets.ViewSet):
             obj=Recharge.objects.get(id=objectid)
             if obj.payment_status==True and obj.wallet_status==False:
                 rate=1
-                user.wallet_balance+=(rate*obj.Service.Fees)//100
+                user.wallet_balance+=(rate*obj.amount)//100
                 user.save()
                 obj.wallet_status=True
                 return Response(status=200,data={'message':'succesfully added wallet balance'})
