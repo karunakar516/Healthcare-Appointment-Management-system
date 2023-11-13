@@ -14,3 +14,8 @@ class OTP(models.Model):
     otp_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(default=timezone.now)
     expiration_time = models.DateTimeField(null=True, blank=True)
+
+class Rate(models.Model):
+    rate=models.FloatField()
+    def __str__(self):
+        return str(self.rate)
