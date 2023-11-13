@@ -21,6 +21,7 @@ from .test import PhonePe
 from django.urls import reverse
 import hashlib,base64,requests,json
 from customer.models import Appointment,Recharge
+from .models import Rate
 from store.models import (
     Phlebotomist,
     Shop,
@@ -564,6 +565,7 @@ class Rechargeviewset(viewsets.ViewSet):
     @csrf_exempt
     def recharge(self,request):
         serializer=RechargeSerializer(data=request.data)
+        rateobj=Rate.objects.get(id=1)
         UserID='11225'
         Token='51a0ff2d7539d8e7c9e54ea0500d7d44'
         GEOCode='77.49,27.20'
@@ -618,7 +620,7 @@ class Rechargeviewset(viewsets.ViewSet):
                     if response_dict['status'] == 2:
                         recharge.payment_status=True
                         user_object=User.objects.get(email=self.request.user.email)
-                        user_object.wallet_balance+=(1*amount)/100
+                        user_object.wallet_balance+=(rateobj.rate*amount)/100
                         user_object.save()
                         recharge.wallet_status=True
                         recharge.save()
@@ -665,7 +667,7 @@ class Rechargeviewset(viewsets.ViewSet):
                     if response_dict['status'] == 2:
                         recharge.payment_status=True
                         user_object=User.objects.get(email=self.request.user.email)
-                        user_object.wallet_balance+=(2*amount)/100
+                        user_object.wallet_balance+=(rateobj.rate*amount)/100
                         user_object.save()
                         recharge.wallet_status=True
                         recharge.save()
@@ -685,38 +687,16 @@ class Add_wallet_balance(viewsets.ViewSet):
     @action(detail=True,methods=['post'])
     @csrf_exempt
     def add_balance(self,request):
-        serializer=AddBalanceSerializer(data=request.data)
+        serializer=RemoveBalanceSerializer(data=request.data)
         if serializer.is_valid():
-            type=serializer.validated_data['type'].lower()
-            objectid=serializer.validated_data['objectid']
+            amount=serializer.validated_data['amount']
             user = User.objects.get(email=self.request.user.email)
-            if user.status!='cr':
-                raise self.customexception()
-            if type=='appointment':
-                obj=Appointment.objects.get(id=objectid)
-                if obj.payment_status==True and obj.wallet_status==False:
-                    rate=5
-                    user.wallet_balance+=(rate*obj.Service.ServiceDetailsDayID.ServiceID.Fees)/100
-                    user.save()
-                    obj.wallet_status=True
-                    obj.save()
-                    return Response(status=200,data={'message':'succesfully added wallet balance'})
-                elif obj.payment_status==False:
-                    return Response(status=400,data={'message':'payment not succeded'})
-                elif obj.wallet_status==True:
-                    return Response(status=400,data={'message':'already wallet balance has been added for this'})
-            obj=Recharge.objects.get(id=objectid)
-            if obj.payment_status==True and obj.wallet_status==False:
-                rate=1
-                user.wallet_balance+=(rate*obj.amount)/100
+            if user.status=='cr':
+                rateobj=Rate.objects.get(id=1)
+                user.wallet_balance+=(amount*rateobj.rate)/100
                 user.save()
-                obj.wallet_status=True
-                obj.save()
-                return Response(status=200,data={'message':'succesfully added wallet balance'})
-            elif obj.payment_status==False:
-                return Response(status=400,data={'message':'payment not succeded'})
-            elif obj.wallet_status==True:
-                return Response(status=400,data={'message':'already wallet balance has been added for this'})
+                return Response(data={"message":'added successfully'},status=200)
+            raise self.customexception()
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
