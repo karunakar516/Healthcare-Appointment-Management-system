@@ -559,7 +559,7 @@ class Rechargeviewset(viewsets.ViewSet):
     class valoper(APIException):
         status_code=400
         default_detail='please select valid operator'
-    authentication_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated]
     @action(detail=True,methods=['post'])
     @csrf_exempt
     def recharge(self,request):
