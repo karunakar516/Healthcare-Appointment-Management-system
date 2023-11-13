@@ -612,14 +612,18 @@ class Rechargeviewset(viewsets.ViewSet):
                 recharge.save()
                 print(response_r)
                 if response_r.status_code==200:
-                    recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='mobile',operator=operator,created_at=current_time)
-                    recharge_obj.payment_status=True
-                    recharge_obj.wallet_status=True
-                    recharge_obj.save()
-                    user_object=User.objects.get(email=self.request.user.email)
-                    user_object.wallet_balance+=(2*amount)/100
-                    user_object.save()
+                    print(response_dict)
                     response_dict = json.loads(response_r.text) 
+                    if response_dict['status'] == 2:
+                        recharge.payment_status=True
+                        user_object=User.objects.get(email=self.request.user.email)
+                        user_object.wallet_balance+=(2*amount)/100
+                        user_object.save()
+                        recharge.wallet_status=True
+                        recharge.save()
+
+                    else:
+                        recharge.delete()
                     return Response(response_dict)
                 else:
                     return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
@@ -658,10 +662,10 @@ class Rechargeviewset(viewsets.ViewSet):
                 if response_r.status_code==200:
                     print(response_dict)
                     response_dict = json.loads(response_r.text) 
-                    if response_dict['status'] == 1:
+                    if response_dict['status'] == 2:
                         recharge.payment_status=True
                         user_object=User.objects.get(email=self.request.user.email)
-                        user_object.wallet_balance+=(1*amount)/100
+                        user_object.wallet_balance+=(2*amount)/100
                         user_object.save()
                         recharge.wallet_status=True
                         recharge.save()
