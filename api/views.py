@@ -619,7 +619,7 @@ class Rechargeviewset(viewsets.ViewSet):
                     user_object=User.objects.get(email=self.request.user.email)
                     user_object.wallet_balance+=(1*amount)/100
                     user_object.save()
-                    response_dict = json.loads(response_r.text) 
+                    response_dict = json.loads(response_r.text+'walletamount:'+str((1*amount)/100)) 
                     return Response(response_dict)
                 else:
                     return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
