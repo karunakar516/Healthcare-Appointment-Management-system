@@ -665,9 +665,10 @@ class Rechargeviewset(viewsets.ViewSet):
                         user_object.save()
                         recharge.wallet_status=True
                         recharge.save()
+
                     else:
                         recharge.delete()
-                    return Response(response_dict,status=400)
+                    return Response(response_dict)
                 else:
                     return Response({'error': 'Failed to fetch data'}, status=response_r.status_code)
                 
