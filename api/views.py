@@ -612,8 +612,9 @@ class Rechargeviewset(viewsets.ViewSet):
                 recharge.save()
                 print(response_r)
                 if response_r.status_code==200:
-                    print(response_dict)
-                    response_dict = json.loads(response_r.text) 
+                    # print(response_dict)
+                    response_dict = json.loads(response_r.text)
+                    print(response_dict) 
                     if response_dict['status'] == 2:
                         recharge.payment_status=True
                         user_object=User.objects.get(email=self.request.user.email)
@@ -660,7 +661,6 @@ class Rechargeviewset(viewsets.ViewSet):
                 recharge=Recharge(number=mob_or_dth_num,amount=amount,rechargeType='dth',operator=operator,created_at=current_time)
                 recharge.save()
                 if response_r.status_code==200:
-                    print(response_dict)
                     response_dict = json.loads(response_r.text) 
                     if response_dict['status'] == 2:
                         recharge.payment_status=True
