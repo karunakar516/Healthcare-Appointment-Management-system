@@ -48,8 +48,6 @@ psycopg2-binary==2.9.6
 ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.20
-# pycrypto==2.6.1
-# pycryptodome==3.19.0
 pydantic==2.4.2
 pydantic_core==2.10.1
 Pygments==2.15.1

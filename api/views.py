@@ -559,6 +559,7 @@ class Rechargeviewset(viewsets.ViewSet):
     class valoper(APIException):
         status_code=400
         default_detail='please select valid operator'
+    authentication_classes=[IsAuthenticated]
     @action(detail=True,methods=['post'])
     @csrf_exempt
     def recharge(self,request):
@@ -613,7 +614,11 @@ class Rechargeviewset(viewsets.ViewSet):
                 if response_r.status_code==200:
                     recharge_obj=Recharge.objects.get(number=mob_or_dth_num,amount=amount,rechargeType='mobile',operator=operator,created_at=current_time)
                     recharge_obj.payment_status=True
+                    recharge_obj.wallet_status=True
                     recharge_obj.save()
+                    user_object=User.objects.get(email=self.request.user.email)
+                    user_object.wallet_balance+=(1*amount)/100
+                    user_object.save()
                     response_dict = json.loads(response_r.text) 
                     return Response(response_dict)
                 else:
@@ -655,7 +660,12 @@ class Rechargeviewset(viewsets.ViewSet):
                     response_dict = json.loads(response_r.text) 
                     if response_dict['status'] == 1:
                         recharge.payment_status=True
+                        user_object=User.objects.get(email=self.request.user.email)
+                        user_object.wallet_balance+=(1*amount)/100
+                        user_object.save()
+                        recharge.wallet_status=True
                         recharge.save()
+
                     else:
                         recharge.delete()
                     return Response(response_dict)
