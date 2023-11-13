@@ -618,7 +618,7 @@ class Rechargeviewset(viewsets.ViewSet):
                     if response_dict['status'] == 2:
                         recharge.payment_status=True
                         user_object=User.objects.get(email=self.request.user.email)
-                        user_object.wallet_balance+=(2*amount)/100
+                        user_object.wallet_balance+=(1*amount)/100
                         user_object.save()
                         recharge.wallet_status=True
                         recharge.save()
