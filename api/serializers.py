@@ -521,8 +521,5 @@ class RechargeSerializer(serializers.Serializer):
     amount=serializers.IntegerField()
     operator=serializers.CharField()
 
-class AddBalanceSerializer(serializers.Serializer):
-    type=serializers.CharField()
-    objectid=serializers.IntegerField()
 class RemoveBalanceSerializer(serializers.Serializer):
     amount=serializers.IntegerField()

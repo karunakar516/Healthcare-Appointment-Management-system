@@ -61,7 +61,6 @@ from .serializers import (
     PaymentDataSerializer,
     PasswordSerializer,
     Userupdateserilaizer,
-    AddBalanceSerializer,
     RemoveBalanceSerializer
     # CreateAppointmentSerializer
 )
