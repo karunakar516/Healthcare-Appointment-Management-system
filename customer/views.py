@@ -315,3 +315,6 @@ def recharge(request):
 
 def get_csrf_token():
     return None
+
+def terms(request):
+    return render(request,'terms.html')
