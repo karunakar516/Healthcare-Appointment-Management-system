@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/about.css' %}" />
+</head>
+<body style="background-color: white;">
+    <header id="header">
+        <div class="logo" style=" border-color: white;">
+            <img src="{% static 'images/logo.png' %}" class="img-fluid" width=100% height=100% alt="">
+        </div>
+
+            <div class="header-text">
+                <a href="#feature"><span id="feat">FEATURE</span></a> 
+                <span>|</span>
+                <a href="#contact"><span id="cont">CONTACT</span></a> 
+                <span>|</span>
+                <a href="{% url 'terms' %}"><span id="term">TERMS</span></a>
+            </div>
+
+        <div class="logo" style=" border-color: white;">
+
+        </div>
+    </header>
+
+    <section id="noone">
+        <div class="f-main-text">
+            <h1>WHATEVER</h1> 
+            <h3>YOU WANT</h3>
+        </div>
+        <div class="f-sub-text">
+            <h3><b>WE HAVE IT HERE</b></h3>
+        </div>
+    </section>
+
+    <section id="feature">
+        <div class="c-text">
+                <h5>Zero Extra Cost On</h5>
+                <h5>Recharge & Get Cashback</h5>
+                <h5>to Use Onwards</h5>
+            <div class="buttons">
+                <a href="{% url 'recharge' %}">
+                    <button class="btn" >
+                        USE IT
+                    </button>
+                </a>
+                
+            </div>
+        </div>
+        <div class="ima-cont">
+            <img src="https://www.mhesi.go.th/images/thatchanon/1._%E0%B8%9B%E0%B8%B5%E0%B8%87%E0%B8%9A%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%A1%E0%B8%B2%E0%B8%93_66/3._%E0%B8%9A%E0%B8%97%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1_%E0%B8%9E%E0%B8%A3%E0%B8%9A.%E0%B8%82%E0%B9%89%E0%B8%AD%E0%B8%A1%E0%B8%B9%E0%B8%A5%E0%B8%82%E0%B9%88%E0%B8%B2%E0%B8%A7%E0%B8%AA%E0%B8%B2%E0%B8%A3/undraw_mobile_content_xvgr.png" width="150%" height="120%" alt="" id="image-cont">
+        </div>
+    </section>
+    
+    <section id="terms">
+        <div class="ima-cont">
+            <img src="https://www.sofs.com.mx/images/Sofs%20Linea%20de%20espera.svg" width="140%" height="120%" alt="" id="image-cont">
+        </div>
+        <div class="t-text">
+            <h5>Get Professionls appointment</h5>
+            <h5>on demand,Mail us to get</h5>
+            <h5>notified of upcoming application</h5>
+            <div class="buttons">
+                <a href="tomail:karunakarbalivada786@gmail.com?subject=This200%is200%for200%contacting200%professionals">
+                <button class="btn">
+                SAY IT HERE
+                </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="c-text">
+                <h5>We provide B2B services and Consumer</h5>
+                <h5>Solutions.Feel Free to Contact us for more.</h5>
+            <div class="buttons">
+                <button class="btn">
+                    HERE YOU SAY
+                </button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

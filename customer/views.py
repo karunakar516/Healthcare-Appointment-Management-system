@@ -318,3 +318,5 @@ def get_csrf_token():
 
 def terms(request):
     return render(request,'terms.html')
+def about(request):
+    return render(request,'main.html')

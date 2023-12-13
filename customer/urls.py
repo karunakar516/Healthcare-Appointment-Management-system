@@ -14,6 +14,7 @@ urlpatterns = [
     path('paymentHandler/', views.paymentHandler, name="paymentHandler"),
     path('paymenthandle/',views.handlepayment,name='paymenthandle'),
     path('recharge',views.recharge,name='recharge'),
-    path('rechargehandle/',views.handlerecharge,name='rechargehandle')
+    path('rechargehandle/',views.handlerecharge,name='rechargehandle'),
+    path('about',views.about,name='about')
     # path('list', views.all_list, name='clinic_list'),
 ]
