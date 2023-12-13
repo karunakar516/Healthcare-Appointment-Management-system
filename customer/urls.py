@@ -3,7 +3,7 @@ from .views import home, account, showCart
 from django.urls import path
 from customer import views
 urlpatterns = [
-    path('', home, name='customer-home'),
+    path('clinic', home, name='customer-home'),
     path('terms',views.terms,name='terms'),
     path('account', account, name='account'),
     path('show_details/<shop_id>', views.show_details, name='show_details'),
@@ -15,6 +15,6 @@ urlpatterns = [
     path('paymenthandle/',views.handlepayment,name='paymenthandle'),
     path('recharge',views.recharge,name='recharge'),
     path('rechargehandle/',views.handlerecharge,name='rechargehandle'),
-    path('about',views.about,name='about')
+    path('',views.about,name='about')
     # path('list', views.all_list, name='clinic_list'),
 ]

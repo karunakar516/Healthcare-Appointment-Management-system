@@ -107,4 +107,51 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     margin-bottom: 20px;
+  }logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Adjust the height as needed */
+  }
+  
+  .logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    width: 50px; /* Adjust the size of your logo */
+    height: auto;
+  }
+  
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    border: 1px solid white;
+    border-top: none;
+  }
+  
+  .logo:hover .dropdown {
+    display: block;
+  }
+  
+  .dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown li {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .dropdown a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
   }

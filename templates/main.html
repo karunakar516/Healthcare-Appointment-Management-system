@@ -21,10 +21,18 @@
                 <span>|</span>
                 <a href="{% url 'terms' %}"><span id="term">TERMS</span></a>
             </div>
-
-        <div class="logo" style=" border-color: white;">
-
-        </div>
+            <div class="logo-container">
+                <div class="logo" style="border-color: white; border-radius: 50%; overflow: visible;">
+                  <img src="{% static 'images/customer-profile.jpg' %}" alt="Your Logo">
+                  <div class="dropdown">
+                    <ul>
+                      <li><a href="{% url 'recharge' %}">Recharge</a></li>
+                      <li><a href="{% url 'terms' %}">Terms</a></li>
+                      <li><a href="#">Services</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
     </header>
 
     <section id="noone">
